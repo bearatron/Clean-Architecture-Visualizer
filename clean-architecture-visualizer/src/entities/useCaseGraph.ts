@@ -1,0 +1,71 @@
+import { cleanNode } from "./types/cleanNode";
+import type { neighbourMap } from "./types/neighbourMap";
+
+export class useCaseGraph {
+    public name: string;
+    private readonly _outNeighbours: neighbourMap;
+    private readonly _violationEdges: Array<[string, string]> = [];
+
+    constructor(name: string) {
+        this.name = name;
+        this._outNeighbours = useCaseGraph.createEmptyNeighbourMap();
+    }
+    
+    private static createEmptyNeighbourMap(): neighbourMap {
+        return {
+        controller: [],
+        presenter: [],
+        viewModel: [],
+        view: [],
+        dataAccess: [],
+        database: [],
+        entities: [],
+        inputData: [],
+        inputBoundary: [],
+        outputData: [],
+        outputBoundary: [],
+        useCaseInteractor: [],
+        };
+    }
+
+    /**
+     * Get the list of out-neighbours from node.
+     * @param node is a cleanNode type.
+     * @returns an array of cleanNodes.
+     */
+    getNodeNeighbours(node: cleanNode): cleanNode[] {
+        return this._outNeighbours[node]
+    }
+
+    /**
+     * Set a node as an out neighbour with a directed edge starting at from and ending at to.
+     * This function will not add a pre-existing cleanNode, nor will it allow a node to reference
+     * itself.
+     * @param from is of a cleanNode type.
+     * @param to is of a cleanNode type.
+     */
+    setNodeNeighbour(from: cleanNode, to: cleanNode): void {
+        if (from === to) {
+            return;
+        }
+        if (!(this._outNeighbours[from].includes(to))) {
+            this._outNeighbours[from].push(to);
+        }
+    }
+
+    /**
+     * Records a violation of the Clean Architecture structure within a use case.
+     * @param edge is a tuple [from, to] which indicates the origin and destination of the violation.
+     */
+    recordViolation(edge: [cleanNode, cleanNode]): void {
+        this._violationEdges.push(edge);
+    }
+
+    getViolationCount(): number {
+        return this._violationEdges.length;
+    }
+
+    hasViolations(): boolean {
+        return this._violationEdges.length > 0;
+    }
+}

@@ -1,0 +1,13 @@
+export type cleanNode =
+    | 'controller'
+    | 'presenter'
+    | 'viewModel'
+    | 'view'
+    | 'dataAccess'
+    | 'database'
+    | 'entities'
+    | 'inputData'
+    | 'inputBoundary'
+    | 'outputData'
+    | 'outputBoundary'
+    | 'useCaseInteractor'
