@@ -34,7 +34,7 @@ frontend/src/
 │   │   ├── edges/          # Custom Edges (Red/Dashed logic)
 │   │   └── Popover.tsx     # Concept explanation popups
 │   │   ├── Legend.tsx          # Floating legend for arrows and node types 
-│   │   └── LearningPopup.tsx   # Interactive pop-ups with component descriptions [cite: 340, 343, 354]
+│   │   └── LearningPopup.tsx   # Interactive pop-ups with component descriptions
 │   └── code/               # Codebase interaction
 │       ├── FileExplorer.ts # Tree view of src folder
 │       └── CodeViewer.tsx  # Syntax highlighted Java code
