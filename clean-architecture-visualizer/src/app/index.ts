@@ -73,7 +73,7 @@ program
         process.platform === "darwin"
           ? "open"
           : process.platform === "win32"
-            ? "start"
+            ? "cmd /c start \"\""
             : "xdg-open";
       const viewerUrl = `http://localhost:${VIEWER_PORT}`;
       setTimeout(() => {
