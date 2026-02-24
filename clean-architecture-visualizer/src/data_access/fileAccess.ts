@@ -11,11 +11,12 @@ export class FileAccess implements FileAccessInterface {
      */
     async getUseCases(): Promise<string[]> {
         const currPath = process.cwd();
-        const useCasePath = await this.findDirectory(currPath, "use_cases");
 
-        if (!useCasePath) {
-            return [];
-        }
+        const srcPath = await this.bfsFindSrc(currPath);
+        if (!srcPath) return [];
+        console.log(srcPath);
+        const useCasePath = await this.findDirectory(srcPath, "use_case");
+        if (!useCasePath) return [];
 
         const useCases = await fs.readdir(useCasePath, {
             withFileTypes: true,
@@ -31,13 +32,22 @@ export class FileAccess implements FileAccessInterface {
      */
     async getFilePaths(node: string, paths: Map<string, string>): Promise<void> {
         const currPath = process.cwd();
-        const target = await this.findDirectory(currPath, node);
+        const srcPath = await this.bfsFindSrc(currPath);
 
-        if (!target) {
+        if (!srcPath) {
             return;
         }
 
-        await this.collectFiles(target, paths);
+        const target = path.join(srcPath, node);
+        
+        try {
+            const stat = await fs.stat(target);
+            if (stat.isDirectory()) {
+                await this.collectFiles(target, paths);
+            }
+        } catch {
+            console.log(`Directory ${node} not found`);
+        }
     }
 
     /**
@@ -60,6 +70,39 @@ export class FileAccess implements FileAccessInterface {
                 await this.collectFiles(fullPath, paths);
             }
         }
+    }
+
+    /**
+     * Find the highest src file starting from the current directory.
+     * @param curr is your current working directory path.
+     * @returns the path to highest in depth src directory.
+     */
+    async bfsFindSrc(curr: string): Promise<string | null> {
+        const queue: string[] = [curr];
+        const visited = new Set<string>();
+
+        while (queue.length > 0) {
+            const currentPath = queue.shift()!;
+            
+            if (visited.has(currentPath)) continue;
+            visited.add(currentPath);
+
+            const entries = await fs.readdir(currentPath, { withFileTypes: true });
+
+            for (const entry of entries) {
+                if (!entry.isDirectory()) continue;
+
+                const fullPath = path.join(currentPath, entry.name);
+
+                if (entry.name === 'src') {
+                    return fullPath;
+                }
+
+                queue.push(fullPath);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -101,15 +144,14 @@ export class FileAccess implements FileAccessInterface {
 
         try {
             const fileContent: string = await fs.readFile(path, { encoding: 'utf-8' });
-            const javaImportRegex = /^import\s+(?:static\s+)?([^;]+);/gm;
-
-            let match;
-            while((match = javaImportRegex.exec(fileContent)) !== null) {
-                const[, importPath] = match;
-                if(importPath){
-                    result.push(importPath.trim());
+            const fileLines = fileContent.split("\n");
+            fileLines.forEach(line => {
+                if (line.startsWith("import ")) {
+                    line = line.trim();
+                    const lastSpace = line.lastIndexOf(" ");
+                    result.push(line.substring(lastSpace + 1));
                 }
-            }
+            });
         }
         catch {
             console.log("The file: " + path + " could not be found");

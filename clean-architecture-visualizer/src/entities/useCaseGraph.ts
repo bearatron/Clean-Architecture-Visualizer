@@ -2,14 +2,14 @@ import type { cleanNode } from "../types/cleanNode.js";
 import type { neighbourMap } from "../types/neighbourMap.js";
 
 export class useCaseGraph {
-    private readonly _name: string;
-    private readonly _outNeighbours: neighbourMap;
-    private readonly _violationEdges: Array<[cleanNode, cleanNode]> = [];
-    private readonly _files = new Map<string, string>();
+    private readonly name: string;
+    private readonly outNeighbours: neighbourMap;
+    private violationEdges: Array<[cleanNode, cleanNode]> = [];
+    private readonly files = new Map<string, string>();
 
     constructor(name: string) {
-        this._name = name;
-        this._outNeighbours = useCaseGraph.createEmptyNeighbourMap();
+        this.name = name;
+        this.outNeighbours = useCaseGraph.createEmptyNeighbourMap();
     }
     
     private static createEmptyNeighbourMap(): neighbourMap {
@@ -30,16 +30,21 @@ export class useCaseGraph {
         };
     }
 
+    /**
+     * Add a file to this use case.
+     * @param name The name of the file.
+     * @param path The path to the file.
+     */
     addFile(name: string, path: string): void {
-        this._files.set(name, path);
+        this.files.set(name, path);
     }
 
     getFiles(): Map<string, string> {
-        return this._files;
+        return this.files;
     }
 
     getName(): string{
-        return this._name;
+        return this.name;
     }
 
     /**
@@ -48,7 +53,7 @@ export class useCaseGraph {
      * @returns an array of cleanNodes.
      */
     getNodeNeighbours(node: cleanNode): cleanNode[] {
-        return this._outNeighbours[node]
+        return this.outNeighbours[node]
     }
 
     /**
@@ -62,24 +67,32 @@ export class useCaseGraph {
         if (from === to) {
             return;
         }
-        if (!(this._outNeighbours[from].includes(to))) {
-            this._outNeighbours[from].push(to);
+        if (!(this.outNeighbours[from].includes(to))) {
+            this.outNeighbours[from].push(to);
         }
     }
 
     /**
-     * Records a violation of the Clean Architecture structure within a use case.
+     * Sets a violation of the Clean Architecture structure within a use case.
      * @param edge is a tuple [from, to] which indicates the origin and destination of the violation.
      */
-    recordViolation(edge: [cleanNode, cleanNode]): void {
-        this._violationEdges.push(edge);
+    setViolation(edge: [cleanNode, cleanNode]): void {
+        this.violationEdges.push(edge);
     }
 
     getViolationCount(): number {
-        return this._violationEdges.length;
+        return this.violationEdges.length;
+    }
+
+    getViolationEdges(): Array<[cleanNode, cleanNode]> {
+        return this.violationEdges;
     }
 
     hasViolations(): boolean {
-        return this._violationEdges.length > 0;
+        return this.violationEdges.length > 0;
+    }
+
+    resetViolations(): void {
+        this.violationEdges = [];
     }
 }

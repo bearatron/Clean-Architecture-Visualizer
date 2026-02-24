@@ -1,11 +1,9 @@
-import type { useCaseGraph } from "../../entities/useCaseGraph.js";
-
 export class GraphVerificationOutputData {
     constructor(
-        private readonly _useCaseGraphList: useCaseGraph[]
+        private readonly useCaseGraphList: object[]
     ){}
 
-    getUseCaseGraphs(): useCaseGraph[] {
-        return this._useCaseGraphList;
+    getUseCaseGraphs(): object[] {
+        return this.useCaseGraphList;
     }
 }
