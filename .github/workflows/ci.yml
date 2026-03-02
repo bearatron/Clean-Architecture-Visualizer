@@ -19,6 +19,9 @@ jobs:
       run:
         working-directory: ./clean-architecture-visualizer
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup-node-env
         with:
           working-directory: ./clean-architecture-visualizer
@@ -29,6 +32,9 @@ jobs:
   frontend-typecheck:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+          uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup-node-env
         with:
           working-directory: ./clean-architecture-visualizer/frontend
