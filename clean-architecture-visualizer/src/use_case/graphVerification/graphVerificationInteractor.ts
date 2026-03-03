@@ -111,11 +111,11 @@ export class GraphVerificationInteractor implements GraphVerificationInputBounda
      */
     private resolveLayer(importPath: string): cleanNode | null {
         importPath = importPath.toLowerCase();
-        if (importPath.includes("viewmodel")) return "viewModel";
+        if (importPath.includes("viewmodel")) return "viewModel"; // must be verified before 'view'
         if (importPath.includes("view")) return "view";
         if (importPath.includes("database")) return "database";
         if (importPath.includes("entities")) return "entities";
-        if (importPath.includes("accessinterface")) return "dataAccessInterface";
+        if (importPath.includes("accessinterface")) return "dataAccessInterface"; // must be verified before 'dataAccess'
         if (importPath.includes("access")) return "dataAccess";
         if (importPath.includes("controller")) return "controller";
         if (importPath.includes("presenter")) return "presenter";
