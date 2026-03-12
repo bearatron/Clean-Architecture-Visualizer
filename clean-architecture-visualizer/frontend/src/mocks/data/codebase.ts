@@ -1,3 +1,5 @@
+import { FileRelation, FileContent } from "../../lib";
+
 export const mockFileTree = {
   id: "src",
   name: "src",
@@ -64,7 +66,7 @@ export const mockFileTree = {
   ]
 };
 
-export const mockFiles: Record<string, MockFile> = {
+export const mockFiles: Record<string, FileContent> = {
   "src/entity/User.java": {
     file_path: "src/entity/User.java",
     content: `package entity;
@@ -254,13 +256,15 @@ export const mockFileRelationsByPath: Record<string, FileRelation[]> = {
       type: "IMPORT",
      target_file: "src/use_case/signup/SignupInputData.java",
       line: 4,
-      description: "Imports SignupInputData from controller arguments." 
+      description: "Imports SignupInputData from controller arguments.",
+      layer: "ApplicationBusinessRules",
     },
     {
       type: "INSTANTIATION",
       target_file: "src/use_case/signup/SignupInputBoundary.java",
       line: 7,
-      description: "Instantiates SignInputBoundary"
+      description: "Instantiates SignInputBoundary",
+      layer: "InterfaceAdapters",
     }
   ],
   "src/data_access/UserSignupDataAccessInterface.java": [
@@ -268,21 +272,8 @@ export const mockFileRelationsByPath: Record<string, FileRelation[]> = {
       type: "DEPENDENCY",
       target_file: "src/entity/User.java",
       line: 2,
-      description: "Depends on Entity/User interface."
+      description: "Depends on Entity/User interface.",
+      layer: "EnterpriseBusinessRules",
     }
   ]
 };
-
-interface MockFile {
-  file_path: string;
-  content: string;
-  language: string;
-  lines_with_violations: number[];
-}
-
-interface FileRelation {
-  type: string;
-  target_file: string;
-  line: number;
-  description: string;
-}

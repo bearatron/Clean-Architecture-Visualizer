@@ -96,4 +96,6 @@ export type FileRelation = {
   line: number;
   target_file: string;
   type: string;
+  description?: string;
+  layer: 'EnterpriseBusinessRules' | 'ApplicationBusinessRules' | 'InterfaceAdapters' | 'FrameworksDrivers';
 };
