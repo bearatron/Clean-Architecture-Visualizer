@@ -46,17 +46,24 @@ export const useMonacoDecorations = ({
     });
 
     // Relations
-    relations.forEach((rel: { line?: number; type?: string; target_file?: string }) => {
-      if (!rel.line) return;
-      newDecorations.push({
-        range: new monacoRef.current!.Range(rel.line, 1, rel.line, model.getLineMaxColumn(rel.line)),
-        options: {
-          isWholeLine: true,
-          className: `relation-highlight-${rel.type?.toLowerCase() || 'default'}`,
-          glyphMarginClassName: 'relation-glyph',
-        },
-      });
-    });
+    console.log("Relations:", relations);
+    relations.forEach((rel: FileRelation) => {
+  if (!rel.line) return;
+
+  const layerKey = rel.layer?.replace(/\s+/g, '').toLowerCase() || 'default';
+  const layerClass = `relation-highlight-${layerKey}`;
+
+  newDecorations.push({
+    range: new monacoRef.current!.Range(rel.line, 1, rel.line, model.getLineMaxColumn(rel.line)),
+    options: {
+      isWholeLine: true,
+      className: layerClass, // This should show up in the div you screenshotted
+      //marginClassName: layerClass, // This will show up in the left gutter'
+      glyphMarginClassName: layerClass,
+      hoverMessage: { value: `Layer: ${rel.layer}` },
+    },
+  });
+});
 
     decorationIds.current = editorRef.current.deltaDecorations(decorationIds.current, newDecorations);
   }, [data, relations]);

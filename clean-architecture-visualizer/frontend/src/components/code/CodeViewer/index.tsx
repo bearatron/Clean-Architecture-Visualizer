@@ -77,7 +77,7 @@ export const CodeViewer = ({ interactionId, filePath, onFileChange }: CodeViewer
         range: new monacoRef.current!.Range(rel.line, 1, rel.line, model.getLineMaxColumn(rel.line)),
         options: {
           isWholeLine: true,
-          className: `relation-highlight-${rel.type?.toLowerCase() || 'default'}`,
+          className: `relation-highlight-${rel.layer?.toLowerCase() || 'default'}`,
           glyphMarginClassName: 'relation-glyph',
         },
       });
