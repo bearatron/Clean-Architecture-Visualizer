@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Paper, Chip } from '@mui/material';
+import { Box, Paper, Chip, Typography } from '@mui/material';
 import { CALayerKey } from '../../../lib';
 
 export const ViewerContainer = styled(Box)({
@@ -39,4 +39,13 @@ export const LayerChip = styled(Chip, {
 export const StatusContainer = styled(Box)<{ isError?: boolean }>(({ isError, theme }) => ({
   padding: theme.spacing(4),
   color: isError ? theme.palette.error.main : theme.palette.text.secondary,
+}));
+
+export const BreadcrumbPath = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'isLast',
+})<{ isLast?: boolean }>(({ theme, isLast }) => ({
+  variant: 'code',
+  fontSize: '0.85rem',
+  fontWeight: isLast ? 600 : 400,
+  color: isLast ? theme.palette.text.primary : theme.palette.text.secondary,
 }));

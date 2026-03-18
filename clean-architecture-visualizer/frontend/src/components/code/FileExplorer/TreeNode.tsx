@@ -1,12 +1,15 @@
-import { Typography } from '@mui/material';
-import FolderIcon from '@mui/icons-material/Folder';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import { FileNode } from '../../../lib';
-import { NodeContainer, ExpandIconWrapper, NodeLabel } from './styles';
+import { 
+  NodeContainer, 
+  ExpandIconWrapper, 
+  NodeLabel, 
+  NodeText,
+  StyledFolderIcon,
+  StyledFolderOpenIcon,
+  StyledFileIcon 
+} from './styles';
 
 interface TreeNodeProps {
   node: FileNode;
@@ -29,7 +32,10 @@ export const TreeNode = ({
   const isExpanded = expandedFolders.has(node.path);
   const isActive = node.path === activeFilePath;
 
-  const handleToggle = () => (isDir ? toggleFolder(node.path) : onSelect(node.path));
+  const handleToggle = () => {
+    if (isDir) toggleFolder(node.path);
+    else onSelect(node.path);
+  };
 
   return (
     <>
@@ -40,29 +46,14 @@ export const TreeNode = ({
         
         <NodeLabel>
           {isDir ? (
-            isExpanded ? (
-              <FolderOpenIcon sx={{ fontSize: 18, color: 'primary.dark' }} /> 
-            ) : (
-              <FolderIcon sx={{ fontSize: 18 }} color="action" />
-            )
+            isExpanded ? <StyledFolderOpenIcon color="primary" /> : <StyledFolderIcon color="action" />
           ) : (
-            <InsertDriveFileIcon 
-              sx={{ 
-                fontSize: 18, 
-                color: isActive ? 'primary.dark' : 'action.active' 
-              }} 
-            />
+            <StyledFileIcon color={isActive ? "primary" : "action"} />
           )} 
           
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontSize: '0.85rem',
-              color: isActive ? 'primary.dark' : 'text.primary',
-            }}
-          >
+          <NodeText variant="body2" isActive={isActive}>
             {node.name}
-          </Typography>
+          </NodeText>
         </NodeLabel>
       </NodeContainer>
 

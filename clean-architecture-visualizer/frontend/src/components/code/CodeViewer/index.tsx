@@ -4,9 +4,9 @@ import { useTheme, Theme } from '@mui/material/styles';
 import type * as Monaco from 'monaco-editor';
 import { useFileViewer, useFileRelations } from '../../../actions/useCodebase';
 import { LAYER_METADATA, CALayer, FileRelation, FileContent } from '../../../lib';
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { ViewerContainer, HeaderContainer, EditorCard, LayerChip, StatusContainer } from './styles';
+import { ViewerContainer, HeaderContainer, EditorCard, LayerChip, StatusContainer, BreadcrumbPath } from './styles';
 
 const getMonacoThemeConfig = (theme: Theme): Monaco.editor.IStandaloneThemeData => ({
   base: 'vs',
@@ -126,16 +126,17 @@ const layerInfo = useMemo(() =>
     <ViewerContainer>
       <HeaderContainer>
         <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
-          {filePath.split('/').map((part, index, arr) => (
-            <Typography 
-              key={`${part}-${index}`} 
-              variant="code" 
-              color={index === arr.length - 1 ? "text.primary" : "text.secondary"}
-              sx={{ fontWeight: index === arr.length - 1 ? 600 : 400 }}
-            >
-              {part}
-            </Typography>
-          ))}
+          {filePath.split('/').map((part, index, arr) => {
+            const isLast = index === arr.length - 1;
+            return (
+              <BreadcrumbPath 
+                key={`${part}-${index}`} 
+                isLast={isLast}
+              >
+                {part}
+              </BreadcrumbPath>
+            );
+          })}
         </Breadcrumbs>
 
         {layerInfo && (

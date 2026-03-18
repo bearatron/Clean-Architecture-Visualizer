@@ -1,4 +1,8 @@
 import { styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
+import FolderIcon from '@mui/icons-material/Folder';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 interface NodeContainerProps {
   isActive?: boolean;
@@ -38,3 +42,27 @@ export const NodeLabel = styled('span')({
   alignItems: 'center',
   gap: 8,
 });
+
+export const NodeText = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<{ isActive?: boolean }>(({ theme, isActive }) => ({
+  fontSize: '0.85rem',
+  color: isActive ? theme.palette.primary.dark : theme.palette.text.primary,
+}));
+
+export const StyledFolderIcon = styled(FolderIcon)(({ theme }) => ({
+  fontSize: 18,
+  color: theme.palette.action.active, 
+}));
+
+export const StyledFolderOpenIcon = styled(FolderOpenIcon)(({ theme }) => ({
+  fontSize: 18,
+  color: theme.palette.primary.dark, 
+}));
+
+export const StyledFileIcon = styled(InsertDriveFileIcon, {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<{ isActive?: boolean }>(({ theme, isActive }) => ({
+  fontSize: 18,
+  color: isActive ? theme.palette.primary.dark : theme.palette.action.active,
+}));
