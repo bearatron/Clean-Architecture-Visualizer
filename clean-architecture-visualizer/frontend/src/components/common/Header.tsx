@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Dropdown from './Dropdown.tsx';
 
-const Header: React.FC = () => {
+export default function Header() {
     const navigate = useNavigate();
 
     const navigationOptions = ['Learning Mode', 'Checker Mode', 'Project Starter'];
@@ -38,5 +37,3 @@ const Header: React.FC = () => {
         </header>
     );
 };
-
-export default Header;

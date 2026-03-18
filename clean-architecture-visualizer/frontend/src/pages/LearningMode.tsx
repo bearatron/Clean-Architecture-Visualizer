@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { CADiagram } from '../components/diagram';
 
-const LearningMode: React.FC = () => {
+export default function LearningMode() {
     return (
         <div style={{ padding: '20px' }}>
               <CADiagram />;
@@ -11,6 +10,3 @@ const LearningMode: React.FC = () => {
         </div>
     );
 }
-
-
-export default LearningMode;

@@ -1,9 +1,8 @@
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Header from '../components/common/Header';
 import { CADiagram } from '../components/diagram';
 
-const UseCaseInteractionDiagram: React.FC = () => {
+export default function UseCaseInteractionDiagram() {
     const { useCaseId, interactionId } = useParams();
     return (
         <div className="use-case-interaction-diagram">
@@ -30,4 +29,3 @@ const UseCaseInteractionDiagram: React.FC = () => {
     );
 };
 
-export default UseCaseInteractionDiagram;
