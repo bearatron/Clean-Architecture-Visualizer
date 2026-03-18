@@ -1,4 +1,30 @@
-export type CALayer = 'Frameworks' | 'InterfaceAdapters' | 'ApplicationBusinessRules' | 'EnterpriseBusinessRules';
+export type CALayer = 'FrameworksDrivers' | 'InterfaceAdapters' | 'ApplicationBusinessRules' | 'EnterpriseBusinessRules';
+
+export type CALayerKey = 'entities' | 'useCases' | 'adapters' | 'drivers';
+
+interface LayerMetadata {
+  paletteKey: CALayerKey;
+  label: string;
+}
+
+export const LAYER_METADATA: Record<CALayer, LayerMetadata> = {
+  EnterpriseBusinessRules: {
+    paletteKey: 'entities',
+    label: 'Enterprise Entity',
+  },
+  ApplicationBusinessRules: {
+    paletteKey: 'useCases',
+    label: 'Use Case',
+  },
+  InterfaceAdapters: {
+    paletteKey: 'adapters',
+    label: 'Interface Adapter',
+  },
+  FrameworksDrivers: {
+    paletteKey: 'drivers',
+    label: 'Frameworks & Drivers',
+  },
+};
 
 export type CAComponentType = 
   | 'Controller' 
@@ -82,13 +108,14 @@ export interface FileNode {
   path: string;
   children?: FileNode[];
   hasViolation?: boolean;
-  layer?: string;
+  layer?: CALayer;
 }
 
 export interface FileContent {
   file_path: string;
   content: string;
   language: string;
+  layer: CALayer;
   lines_with_violations: number[];
 }
 
@@ -97,5 +124,5 @@ export type FileRelation = {
   target_file: string;
   type: string;
   description?: string;
-  layer: 'EnterpriseBusinessRules' | 'ApplicationBusinessRules' | 'InterfaceAdapters' | 'FrameworksDrivers';
+  layer: CALayer;
 };

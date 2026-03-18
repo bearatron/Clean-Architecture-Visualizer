@@ -3,19 +3,11 @@ import Editor, { OnMount } from '@monaco-editor/react';
 import { useTheme, Theme } from '@mui/material/styles';
 import type * as Monaco from 'monaco-editor';
 import { useFileViewer, useFileRelations } from '../../../actions/useCodebase';
-import { FileRelation } from '../../../lib';
-
-export type FileData = {
-  language: string;
-  content: string;
-  lines_with_violations?: number[];
-};
-
-type CodeViewerProps = {
-  interactionId: string;
-  filePath: string | null;
-  onFileChange: (newPath: string) => void;
-};
+import { LAYER_METADATA, CALayer, FileRelation, FileContent } from '../../../lib';
+import { Breadcrumbs, Typography } from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+// New Styled Components
+import { ViewerContainer, HeaderContainer, EditorCard, LayerChip, StatusContainer } from './styles';
 
 const getMonacoThemeConfig = (theme: Theme): Monaco.editor.IStandaloneThemeData => ({
   base: 'vs',
@@ -30,139 +22,136 @@ const getMonacoThemeConfig = (theme: Theme): Monaco.editor.IStandaloneThemeData 
   },
 });
 
+type CodeViewerProps = {
+  interactionId: string;
+  filePath: string | null;
+  onFileChange: (newPath: string) => void;
+};
+
 export const CodeViewer = ({ interactionId, filePath, onFileChange }: CodeViewerProps) => {
   const muiTheme = useTheme();
-
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<typeof Monaco | null>(null);
   const decorationIds = useRef<string[]>([]);
   const linkProviderRef = useRef<Monaco.IDisposable | null>(null);
+  const relationsRef = useRef<FileRelation[]>([]);
 
-  const { data, isLoading, isError } = useFileViewer(
-    interactionId,
-    filePath ?? ''
-  ) as { data?: FileData; isLoading: boolean; isError: boolean };
+  const { data, isLoading, isError } = useFileViewer(interactionId, filePath) as { data?: FileContent; isLoading: boolean; isError: boolean };
+  const { data: relationsData } = useFileRelations(interactionId, filePath) as { data?: FileRelation[] | { relations: FileRelation[] } };
 
-  const { data: relationsData } = useFileRelations(
-    interactionId,
-    filePath ?? ''
-  ) as { data?: FileRelation[] | { relations: FileRelation[] } };
-
-  const relations: FileRelation[] = useMemo(() => {
+  const relations = useMemo(() => {
     if (!relationsData) return [];
-    return Array.isArray(relationsData)
-      ? relationsData
-      : relationsData.relations ?? [];
+    const rels = Array.isArray(relationsData) ? relationsData : relationsData.relations ?? [];
+    relationsRef.current = rels;
+    return rels;
   }, [relationsData]);
 
-  // Apply line decorations (violations + relations)
-  const applyDecorations = useCallback(() => {
-    if (!editorRef.current || !monacoRef.current || !data) return;
+  const layerInfo = useMemo(() => data?.layer ? LAYER_METADATA[data.layer as CALayer] : null, [data?.layer]);
 
-    const model = editorRef.current.getModel();
-    if (!model) return;
-
-    const newDecorations: Monaco.editor.IModelDeltaDecoration[] = [];
-
-    data.lines_with_violations?.forEach((line) => {
-      newDecorations.push({
-        range: new monacoRef.current!.Range(line, 1, line, model.getLineMaxColumn(line)),
-        options: { isWholeLine: true, className: 'violation-highlight', glyphMarginClassName: 'violation-glyph' },
-      });
-    });
-
-    relations.forEach((rel) => {
-      if (!rel.line) return;
-      newDecorations.push({
-        range: new monacoRef.current!.Range(rel.line, 1, rel.line, model.getLineMaxColumn(rel.line)),
-        options: {
-          isWholeLine: true,
-          className: `relation-highlight-${rel.layer?.toLowerCase() || 'default'}`,
-          glyphMarginClassName: 'relation-glyph',
-        },
-      });
-    });
-
-    decorationIds.current = editorRef.current.deltaDecorations(decorationIds.current, newDecorations);
-  }, [data, relations]);
-
-  // Editor mount callback
-  const handleEditorDidMount: OnMount = (editor, monaco) => {
-    editorRef.current = editor;
-    monacoRef.current = monaco;
-
-    // Define and set the theme inside mount
-    const monacoThemeConfig = getMonacoThemeConfig(muiTheme);
-    monaco.editor.defineTheme('customTheme', monacoThemeConfig);
-    monaco.editor.setTheme('customTheme');
-
-    applyDecorations();
-
-    editor.onMouseUp((e) => {
-      const evt = e.event.browserEvent;
-      if (!(evt.metaKey || evt.ctrlKey)) return;
-
-      const line = e.target.position?.lineNumber;
-      if (!line) return;
-
-      const match = relations.find((rel) => rel.line === line);
-      if (match?.target_file) onFileChange(match.target_file);
-    });
-  };
-
-  // Re-apply decorations when data or relations change
+  // Link Provider & Decoration logic remains same to preserve "Cmd+Click" functionality
   useEffect(() => {
-    applyDecorations();
-  }, [applyDecorations]);
-
-  // Register link provider
-  useEffect(() => {
-    if (!monacoRef.current || !data?.language) return;
-
+    if (!monacoRef.current || !data?.language || !editorRef.current) return;
     linkProviderRef.current?.dispose();
     linkProviderRef.current = monacoRef.current.languages.registerLinkProvider(data.language, {
       provideLinks: (model) => {
         const links = relations
           .filter((rel) => rel.line && rel.target_file)
           .map((rel) => ({
-            range: new monacoRef.current!.Range(rel.line!, 1, rel.line!, model.getLineMaxColumn(rel.line!)),
-            url: `file://${rel.target_file}`,
+            range: new monacoRef.current!.Range(rel.line, 1, rel.line, model.getLineMaxColumn(rel.line)),
+            url: `file://${rel.target_file}`, 
           }));
         return { links };
       },
     });
-
-    return () => {
-      linkProviderRef.current?.dispose();
-    };
+    return () => linkProviderRef.current?.dispose();
   }, [data?.language, relations]);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      decorationIds.current = [];
-      linkProviderRef.current?.dispose();
-    };
-  }, []);
+  const applyDecorations = useCallback(() => {
+    if (!editorRef.current || !monacoRef.current || !data) return;
+    const model = editorRef.current.getModel();
+    if (!model) return;
 
-  if (!filePath) return <div className="p-4">Select a file to view content.</div>;
-  if (isLoading) return <div className="p-4">Loading code...</div>;
-  if (isError || !data) return <div className="p-4 text-red-500">Error loading file: {filePath}</div>;
+    const newDecorations: Monaco.editor.IModelDeltaDecoration[] = [];
+    data.lines_with_violations?.forEach((line) => {
+      newDecorations.push({
+        range: new monacoRef.current!.Range(line, 1, line, 1),
+        options: { isWholeLine: true, className: 'violation-highlight' },
+      });
+    });
+
+    relations.forEach((rel) => {
+      const relMeta = LAYER_METADATA[rel.layer as CALayer];
+      if (!rel.line || !relMeta) return;
+      newDecorations.push({
+        range: new monacoRef.current!.Range(rel.line, 1, rel.line, 1),
+        options: {
+          isWholeLine: true,
+          className: `relation-highlight-${rel.layer.toLowerCase()}`,
+          hoverMessage: { value: `Layer: ${relMeta.label}` },
+        },
+      });
+    });
+    decorationIds.current = editorRef.current.deltaDecorations(decorationIds.current, newDecorations);
+  }, [data, relations]);
+
+  const handleEditorDidMount: OnMount = (editor, monaco) => {
+    editorRef.current = editor;
+    monacoRef.current = monaco;
+    monaco.editor.defineTheme('caveTheme', getMonacoThemeConfig(muiTheme));
+    monaco.editor.setTheme('caveTheme');
+    applyDecorations();
+    editor.onMouseUp((e) => {
+      const evt = e.event.browserEvent;
+      if (!(evt.metaKey || evt.ctrlKey)) return;
+      const line = e.target.position?.lineNumber;
+      if (!line) return;
+      const match = relationsRef.current.find((rel) => rel.line === line);
+      if (match?.target_file) onFileChange(match.target_file);
+    });
+  };
+
+  useEffect(() => { applyDecorations(); }, [data, relations, applyDecorations]);
+  useEffect(() => { return () => { linkProviderRef.current?.dispose(); }; }, []);
+
+  if (!filePath) return <StatusContainer>Select a file to view content.</StatusContainer>;
+  if (isLoading) return <StatusContainer>Loading code...</StatusContainer>;
+  if (isError || !data) return <StatusContainer isError>Error loading file: {filePath}</StatusContainer>;
 
   return (
-    <Editor
-      key={filePath}
-      height="100vh"
-      language={data.language}
-      value={data.content}
-      options={{
-        readOnly: true,
-        glyphMargin: true,
-        links: true,
-        renderLineHighlight: 'all',
-        scrollBeyondLastLine: false,
-      }}
-      onMount={handleEditorDidMount}
-    />
+    <ViewerContainer>
+      <HeaderContainer>
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+          {filePath.split('/').map((part, index, arr) => (
+            <Typography 
+              key={`${part}-${index}`} 
+              variant="code" 
+              color={index === arr.length - 1 ? "text.primary" : "text.secondary"}
+              sx={{ fontWeight: index === arr.length - 1 ? 600 : 400 }}
+            >
+              {part}
+            </Typography>
+          ))}
+        </Breadcrumbs>
+
+        {layerInfo && (
+          <LayerChip 
+            label={layerInfo.label}
+            size="small"
+            layerkey={layerInfo.paletteKey} 
+          />
+        )}
+      </HeaderContainer>
+
+      <EditorCard elevation={0}>
+        <Editor
+          key={filePath}
+          height="100%"
+          language={data.language}
+          value={data.content}
+          onMount={handleEditorDidMount}
+          options={{ readOnly: true, automaticLayout: true, glyphMargin: true }}
+        />
+      </EditorCard>
+    </ViewerContainer>
   );
 };

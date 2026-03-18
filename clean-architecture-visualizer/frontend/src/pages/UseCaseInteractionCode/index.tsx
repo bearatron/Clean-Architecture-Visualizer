@@ -11,6 +11,7 @@ import {
   MainViewContainer,
 } from './layout';
 import { useResizableSidebar } from './useResizeableSidebar.tsx';
+import { CtaButton } from '../../components/common/Button.tsx';
 import { Box } from '@mui/material';
 
 const UseCaseInteractionCode: React.FC = () => {
@@ -59,25 +60,23 @@ const UseCaseInteractionCode: React.FC = () => {
         <Resizer onMouseDown={startResizing} />
 
         <MainViewContainer>
-          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-            <button
-              className="btn-link"
-              onClick={() =>
-                navigate(
-                  `/use-case/${useCaseId}/interaction/${interactionId}/diagram`
-                )
-              }
+          <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+            <CtaButton
+              variant="outlined"
+              startIcon={<span>←</span>}
+              onClick={() => navigate(`/use-case/${useCaseId}/interaction/${interactionId}/diagram`)}
             >
-              ← Back to Diagram
-            </button>
+              Back to Diagram
+            </CtaButton>
 
-            <button
-              className="btn-link"
+            <CtaButton
+              variant="outlined"
+              startIcon={<span>←</span>}
               onClick={handleBack}
               disabled={!history.length}
             >
-              ← Back to Previous File
-            </button>
+              Back to Previous File
+            </CtaButton>
           </Box>
 
           <CodeViewer

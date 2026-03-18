@@ -77,6 +77,7 @@ public interface User {
     LocalDateTime getCreationTime();
 }`,
     language: "java",
+    layer: "EnterpriseBusinessRules",
     lines_with_violations: [], 
   },
   "src/use_case/signup/SignupInputBoundary.java": {
@@ -86,6 +87,7 @@ public interface SignupInputBoundary {
     void execute(SignupInputData signupInputData);
 }`,
     language: "java",
+    layer: "ApplicationBusinessRules",
     lines_with_violations: [], 
   },
   "src/use_case/signup/SignupInputData.java": {
@@ -108,6 +110,7 @@ public class SignupInputData {
     public String getRepeatPassword() { return repeatPassword; }
 }`,
     language: "java",
+    layer: "ApplicationBusinessRules",
     lines_with_violations: [3], 
   },
   "src/interface_adapter/signup/SignupController.java": {
@@ -129,6 +132,7 @@ public class SignupController {
     }
 }`,
     language: "java", 
+    layer: "InterfaceAdapters",
     lines_with_violations: [] 
   },
   "src/data_access/UserSignupDataAccessInterface.java": {
@@ -140,6 +144,7 @@ public interface UserSignupDataAccessInterface {
     void save(User user);
 }`,
     language: "java",
+    layer: "FrameworksDrivers",
     lines_with_violations: [] 
   },
   "src/view/LoginView.java": {
@@ -245,6 +250,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
 }`,
     language: "java",
+    layer: "FrameworksDrivers",
     lines_with_violations: [] 
   }
 };
