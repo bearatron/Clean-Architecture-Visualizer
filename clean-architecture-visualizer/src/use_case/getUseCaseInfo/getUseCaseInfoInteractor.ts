@@ -45,7 +45,7 @@ export class GetUseCaseInfoInteractor implements GetUseCaseInfoInputBoundary {
 
         const result = {
             interaction_name: useCase.name,
-            ndoes: nodes,
+            nodes: nodes,
             edges: edges,
         };
 

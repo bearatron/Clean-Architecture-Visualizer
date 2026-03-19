@@ -79,7 +79,7 @@ export class GetRelationsInteractor implements GetRelationsInputBoundary{
                     layer: file.layer,
                 });
 
-                break; // one relation entry per file
+                break;
             }
         }
 

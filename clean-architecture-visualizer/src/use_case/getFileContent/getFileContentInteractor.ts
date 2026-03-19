@@ -14,22 +14,21 @@ export class GetFileContentInteractor implements GetFileContentInputBoundary {
         ) {}
 
     async getFileContent(): Promise<void> {
-        const fileNameIndex = this.inputData.getFilePath().lastIndexOf("/");
-        const fileName = this.inputData.getFilePath().substring(fileNameIndex + 1);
-        const filePath = this.db.getFileByPath(fileName);
-        if (!filePath) return;
-        const fileContent = await this.fileAccess.getFileContent(filePath.filePath);
-        const result = {
-            file_path: this.inputData.getFilePath(),
-            content: fileContent,
-            language: filePath.fileType ?? "not_java",
-            layer: filePath.layer,
-            Violation_words: [],
-            lines_with_violations: []
-        }
-        this.outputData.setOutputData(result);
-        return;
-    }
+    const filePath = this.inputData.getFilePath();
+    const fileEntry = this.db.getFileByPath(filePath); // ← use full path directly
+    if (!fileEntry) return;
+
+    const fileContent = await this.fileAccess.getFileContent(fileEntry.filePath);
+    const result = {
+        file_path: filePath,
+        content: fileContent,
+        language: fileEntry.fileType ?? "not_java",
+        layer: fileEntry.layer,
+        Violation_words: [],
+        lines_with_violations: []
+    };
+    this.outputData.setOutputData(result);
+}
 
     
 }
