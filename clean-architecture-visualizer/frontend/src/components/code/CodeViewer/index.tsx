@@ -163,7 +163,7 @@ const layerInfo = useMemo(() =>
           language={data.language}
           value={data.content}
           onMount={handleEditorDidMount}
-          options={{ readOnly: true, automaticLayout: true, glyphMargin: true }}
+          options={{ readOnly: true, automaticLayout: true, glyphMargin: true, scrollBeyondLastLine: false, }}
         />
       </EditorCard>
     </ViewerContainer>

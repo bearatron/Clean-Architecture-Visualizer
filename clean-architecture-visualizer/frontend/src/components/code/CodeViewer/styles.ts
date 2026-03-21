@@ -7,12 +7,14 @@ export const ViewerContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   gap: '16px', // theme.spacing(2)
+  overflow: 'hidden',
 });
 
 export const HeaderContainer = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  flexShrink: 0,
 });
 
 export const EditorCard = styled(Paper)(({ theme }) => ({
@@ -24,6 +26,8 @@ export const EditorCard = styled(Paper)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   paddingTop: theme.spacing(2),
+  minHeight: 0,
+  height: '100%',
 }));
 
 export const LayerChip = styled(Chip, {

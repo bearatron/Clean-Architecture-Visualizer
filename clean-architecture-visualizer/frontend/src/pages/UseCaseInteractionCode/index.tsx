@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import { FileExplorer } from '../../components/code/FileExplorer';
@@ -15,7 +15,7 @@ import { CtaButton } from '../../components/common/Button.tsx';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-const UseCaseInteractionCode: React.FC = () => {
+const UseCaseInteractionCode = () => {
   const { useCaseId, interactionId } =
     useParams<{ useCaseId: string; interactionId: string }>();
   const { t } = useTranslation('useCaseInteractionCode');
