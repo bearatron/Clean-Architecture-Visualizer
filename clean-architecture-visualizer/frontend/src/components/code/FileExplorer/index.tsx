@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFileTree } from '../../../actions/useCodebase';
 import { TreeNode } from './TreeNode';
 import { FileNode } from '../../../lib';
@@ -12,28 +12,30 @@ const normalizeFolderPath = (path: string): string =>
   path && !path.endsWith('/') ? `${path}/` : path;
 
 export const FileExplorer = ({ onSelect, activeFilePath }: FileExplorerProps) => {
-  const { data: fileTree, isLoading } = useFileTree();
+  const { data: fileTree, isLoading, isFetching } = useFileTree();
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
   const [lastAutoExpandedPath, setLastAutoExpandedPath] = useState<string | null>(null);
 
-  if (activeFilePath !== lastAutoExpandedPath) {
-    const parts = activeFilePath?.split('/') || [];
-    const newPaths = new Set(expandedFolders);
-    let changed = false;
+  useEffect(() => {
+    if (activeFilePath && activeFilePath !== lastAutoExpandedPath) {
+      const parts = activeFilePath.split('/');
+      const newPaths = new Set(expandedFolders);
+      let changed = false;
 
-    for (let i = 1; i < parts.length; i++) {
-      const folderPath = normalizeFolderPath(parts.slice(0, i).join('/'));
-      if (!newPaths.has(folderPath)) {
-        newPaths.add(folderPath);
-        changed = true;
+      for (let i = 1; i < parts.length; i++) {
+        const folderPath = normalizeFolderPath(parts.slice(0, i).join('/'));
+        if (!newPaths.has(folderPath)) {
+          newPaths.add(folderPath);
+          changed = true;
+        }
       }
-    }
 
-    if (changed) {
-      setExpandedFolders(newPaths);
+      if (changed) {
+        setExpandedFolders(newPaths);
+      }
+      setLastAutoExpandedPath(activeFilePath);
     }
-    setLastAutoExpandedPath(activeFilePath);
-  }
+  }, [activeFilePath, lastAutoExpandedPath, expandedFolders]);
 
   const toggleFolder = (path: string) => {
     const normalized = normalizeFolderPath(path);
@@ -51,7 +53,7 @@ export const FileExplorer = ({ onSelect, activeFilePath }: FileExplorerProps) =>
   if (isLoading) return <div>Loading project structure...</div>;
 
   return (
-    <div>
+    <div style={{ opacity: isFetching ? 0.7 : 1, transition: 'opacity 0.2s' }}>
       {fileTree?.children?.map((node: FileNode) => (
         <TreeNode
           key={node.id}
