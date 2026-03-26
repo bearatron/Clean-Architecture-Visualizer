@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import type { RefObject } from 'react';
-import type { CANode, CAEdge } from '../../lib/types';
+import type { CANode, CAEdge } from '../../../lib/types';
+import { EdgeSvg } from './styles';
 
 type ArrowHeadType = 'filledTriangle' | 'hollowTriangle' | 'none';
 type RectSide = 'left' | 'right' | 'top' | 'bottom';
@@ -163,10 +164,10 @@ export function Edge({ startNode, endNode, status, arrowHeadType, containerRef, 
     // 0 keeps the bend near the start anchor, 0.5 centers it, 1 pushes it near the end anchor.
     const viaRatio = routeHint?.viaRatio;
     const mode = routeHint?.mode;
-    
+
     let orthogonalPath: string;
-    
-        // Straight mode draws a direct segment between resolved anchors.
+
+    // Straight mode draws a direct segment between resolved anchors.
     if (mode === 'straight') {
         orthogonalPath = `M ${line.x1} ${line.y1} L ${line.x2} ${line.y2}`;
         // Single-bend elbows, forced orientation.
@@ -203,19 +204,7 @@ export function Edge({ startNode, endNode, status, arrowHeadType, containerRef, 
     }
 
     return (
-        <svg
-            style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                overflow: 'visible',
-                pointerEvents: 'none',
-                zIndex: 0,
-            }}
-            aria-hidden="true"
-            focusable="false"
-        >
+        <EdgeSvg aria-hidden="true" focusable="false">
             <defs>
                 {/* Filled marker for dependency-like arrows. */}
                 {arrowHeadType === 'filledTriangle' && (
@@ -237,6 +226,6 @@ export function Edge({ startNode, endNode, status, arrowHeadType, containerRef, 
                 fill="none"
                 markerEnd={markerEnd}
             />
-        </svg>
+        </EdgeSvg>
     );
 }
