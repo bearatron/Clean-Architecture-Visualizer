@@ -11,7 +11,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
-
+import '../../i18n/config'; 
 import { useAnalysisSummary } from '../../actions/useAnalysis';
 import { UseCase, Interaction } from '../../lib/types';
 import { styles } from './styles';
@@ -31,7 +31,11 @@ const CheckerMode = () => {
     }
 
     if (isError || !data) {
-        return <Typography sx={{ textAlign: 'center', mt: 6 }}>{t('errorLoading')}</Typography>;
+        return (
+            <Typography sx={{ textAlign: 'center', mt: 6 }}>
+                {t('errorLoading')}
+            </Typography>
+        );
     }
 
     const filteredUseCases = data.use_cases
@@ -47,10 +51,19 @@ const CheckerMode = () => {
         <Box sx={styles.container(theme)}>
             {/* Top Navigation */}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <IconButton component={Link} to="/" color="inherit">
+                <IconButton 
+                    component={Link} 
+                    to="/" 
+                    color="inherit" 
+                    aria-label={t('home')}
+                >
                     <HomeIcon />
                 </IconButton>
-                <IconButton color="inherit" title="Info">
+                <IconButton 
+                    color="inherit" 
+                    title={t('info')} 
+                    aria-label={t('info')}
+                >
                     <InfoOutlinedIcon />
                 </IconButton>
             </Box>
@@ -94,40 +107,53 @@ const CheckerMode = () => {
 
             {/* Use Case List */}
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                {filteredUseCases.map((useCase: UseCase) => (
-                    <Accordion key={useCase.id} sx={styles.accordion} disableGutters>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', pr: 2 }}>
-                                <Typography sx={{ fontWeight: 600, fontSize: 18 }}>{useCase.name}</Typography>
-                                {useCase.violation_count > 0 && (
-                                    <Typography sx={{ color: theme.palette.warning.main, fontWeight: 700, fontSize: 13 }}>
-                                        {t('violationsPresent', { count: useCase.violation_count })}
+                {filteredUseCases.map((useCase: UseCase) => {
+                    const summaryId = `use-case-${useCase.id}-summary`;
+                    const detailsId = `use-case-${useCase.id}-details`;
+                    
+                    return (
+                        <Accordion key={useCase.id} sx={styles.accordion} disableGutters>
+                            <AccordionSummary 
+                                expandIcon={<ExpandMoreIcon />}
+                                id={summaryId}
+                                aria-controls={detailsId}
+                            >
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', pr: 2 }}>
+                                    <Typography sx={{ fontWeight: 600, fontSize: 18 }}>{useCase.name}</Typography>
+                                    {useCase.violation_count > 0 && (
+                                        <Typography sx={{ color: theme.palette.warning.main, fontWeight: 700, fontSize: 13 }}>
+                                            {t('violationsPresent', { count: useCase.violation_count })}
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </AccordionSummary>
+                            <AccordionDetails 
+                                sx={{ pt: 0 }} 
+                                id={detailsId}
+                                aria-labelledby={summaryId}
+                            >
+                                {(!useCase.interactions || useCase.interactions.length === 0) ? (
+                                    <Typography sx={{ color: theme.palette.text.disabled, fontStyle: 'italic', fontSize: 14 }}>
+                                        {t('noInteractions')}
                                     </Typography>
+                                ) : (
+                                    <ul style={{ margin: 0, paddingLeft: 20 }}>
+                                        {(useCase.interactions ?? []).map((interaction: Interaction) => (
+                                            <li key={interaction.interaction_id} style={{ margin: '12px 0' }}>
+                                                <Link 
+                                                    to={`/use-case/${useCase.id}/interaction/${interaction.interaction_id}/diagram`}
+                                                    style={styles.link(theme)} 
+                                                >
+                                                    {interaction.interaction_name}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 )}
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ pt: 0 }}>
-                            {(!useCase.interactions || useCase.interactions.length === 0) ? (
-                                <Typography sx={{ color: theme.palette.text.disabled, fontStyle: 'italic', fontSize: 14 }}>
-                                    {t('noInteractions')}
-                                </Typography>
-                            ) : (
-                                <ul style={{ margin: 0, paddingLeft: 20 }}>
-                                    {(useCase.interactions ?? []).map((interaction: Interaction) => (
-                                        <li key={interaction.interaction_id} style={{ margin: '12px 0' }}>
-                                            <Link 
-                                                to={`/use-case/${useCase.id}/interaction/${interaction.interaction_id}/diagram`}
-                                                style={styles.link(theme)} 
-                                            >
-                                                {interaction.interaction_name}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
+                            </AccordionDetails>
+                        </Accordion>
+                    );
+                })}
             </Box>
         </Box>
     );
