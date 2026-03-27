@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { renderHook, waitFor } from '../../test-utils'; 
-import { useFileTree, useFileViewer } from '../../../src/actions/useCodebase';
-import { server } from '../../../src/mocks/server';
 import { http, HttpResponse } from 'msw';
+import { renderHook, waitFor } from '../../test-utils'; 
+import { useFileTree, useFileViewer } from '@/actions/useCodebase';
+import { server } from '../../../src/mocks/server';
 
 describe('useCodebase Hook', () => {
   it('successfully fetches the file tree', async () => {
@@ -11,6 +11,7 @@ describe('useCodebase Hook', () => {
         return HttpResponse.json([{ name: 'src', type: 'directory' }]);
       })
     );
+
     const { result } = renderHook(() => useFileTree());
 
     expect(result.current.isLoading).toBe(true);
@@ -24,7 +25,6 @@ describe('useCodebase Hook', () => {
   it('remains disabled if interactionId is missing (useFileViewer)', async () => {
     const { result } = renderHook(() => useFileViewer('', null));
 
-    // verify it stays 'idle' because 'enabled' is false
     expect(result.current.fetchStatus).toBe('idle');
   });
 });
