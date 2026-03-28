@@ -36,7 +36,7 @@ export const lightTheme = createTheme({
             secondary: '#616161',
         },
         error: {
-            main: '#D84315',
+            main: '#E80000',
         },
         background: {
             default: '#FFFFFF',
