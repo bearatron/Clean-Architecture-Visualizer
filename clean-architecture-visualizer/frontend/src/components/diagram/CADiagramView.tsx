@@ -161,11 +161,11 @@ export function CADiagramView({
     }), []);
 
     return (
-        <><Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-            <Container ref={diagramContainerRef} sx={{ border: 2, borderColor: 'grey.600', borderRadius: 8, bgcolor: 'grey.100', py: 1.25, overflowX: 'auto', position: 'relative' }}>
-                <Box sx={{ display: 'grid', gridTemplateColumns: '1.1fr 2.1fr 1.1fr', columnGap: 1.25, rowGap: 0.5, minWidth: 900 }}>
-                    <Box sx={{ border: 2, borderColor: 'adapters.contrastText', bgcolor: 'adapters.light', borderRadius: 2, p: 1 }}>
-                        <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 700 }}>
+        <><Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 0.25, sm: 0.5, md: 0.75 } }}>
+            <Container ref={diagramContainerRef} sx={{ border: 2, borderColor: 'grey.600', borderRadius: 8, bgcolor: 'grey.100', py: { xs: 0.5, sm: 0.75, md: 1.25 }, px: { xs: 0.5, sm: 1 }, overflowX: 'auto', position: 'relative', zoom: { xs: 0.78, sm: 0.9, md: 1 } }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1.1fr 2.1fr 1.1fr', columnGap: { xs: 0.5, sm: 0.75, md: 1.25 }, rowGap: { xs: 0.25, sm: 0.4, md: 0.5 }, width: '100%' }}>
+                    <Box sx={{ border: 2, borderColor: 'adapters.contrastText', bgcolor: 'adapters.light', borderRadius: 2, p: { xs: 0.5, sm: 0.75, md: 1 } }}>
+                        <Typography variant="subtitle2" sx={{ mb: { xs: 0.25, sm: 0.4, md: 0.5 }, fontWeight: 700, fontSize: 'clamp(0.68rem, 0.8vw, 0.875rem)' }}>
                             Interface Adapters
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', height: '100%' }}>
@@ -175,11 +175,11 @@ export function CADiagramView({
                         </Box>
                     </Box>
 
-                    <Box sx={{ border: 2, borderColor: 'useCases.contrastText', bgcolor: 'useCases.light', borderRadius: 2, p: 1 }}>
-                        <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 700 }}>
+                    <Box sx={{ border: 2, borderColor: 'useCases.contrastText', bgcolor: 'useCases.light', borderRadius: 2, p: { xs: 0.5, sm: 0.75, md: 1 } }}>
+                        <Typography variant="subtitle2" sx={{ mb: { xs: 0.25, sm: 0.4, md: 0.5 }, fontWeight: 700, fontSize: 'clamp(0.68rem, 0.8vw, 0.875rem)' }}>
                             Application Business Rules
                         </Typography>
-                        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: 0.5, columnGap: 1 }}>
+                        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: { xs: 0.25, sm: 0.4, md: 0.5 }, columnGap: { xs: 0.5, sm: 0.75, md: 1 } }}>
                             <CANodeView {...inputData} isInteractive={areNodesInteractive} />
                             <Box />
                             <CANodeView {...inputBoundary} isInteractive={areNodesInteractive} />
@@ -195,8 +195,8 @@ export function CADiagramView({
                         </Box>
                     </Box>
 
-                    <Box sx={{ border: 2, borderColor: 'entities.contrastText', bgcolor: 'entities.light', borderRadius: 2, p: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 700 }}>
+                    <Box sx={{ border: 2, borderColor: 'entities.contrastText', bgcolor: 'entities.light', borderRadius: 2, p: { xs: 0.5, sm: 0.75, md: 1 }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <Typography variant="subtitle2" sx={{ mb: { xs: 0.25, sm: 0.4, md: 0.5 }, fontWeight: 700, fontSize: 'clamp(0.68rem, 0.8vw, 0.875rem)' }}>
                             Enterprise Business Rules
                         </Typography>
                         <Box
@@ -215,30 +215,30 @@ export function CADiagramView({
                         </Box>
                     </Box>
                 </Box>
-                <Box sx={{ mt: 1, border: 2, borderColor: 'drivers.contrastText', bgcolor: 'drivers.light', borderRadius: 2, p: 0 }}>
-                    <Box sx={{ display: 'grid', gridTemplateColumns: '1.1fr 2.1fr 1.1fr', columnGap: 1.25, minWidth: 900 }}>
-                        <Box sx={{ px: 1, pt: 0.75 }} />
-                        <Box sx={{ px: 1, pt: 0.75 }}>
-                            <Typography variant="subtitle2" sx={{ mb: 0.25, fontWeight: 700 }}>
+                <Box sx={{ mt: { xs: 0.5, sm: 0.75, md: 1 }, border: 2, borderColor: 'drivers.contrastText', bgcolor: 'drivers.light', borderRadius: 2, p: 0 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: '1.1fr 2.1fr 1.1fr', columnGap: { xs: 0.5, sm: 0.75, md: 1.25 }, width: '100%' }}>
+                        <Box sx={{ px: { xs: 0.5, sm: 0.75, md: 1 }, pt: { xs: 0.4, sm: 0.6, md: 0.75 } }} />
+                        <Box sx={{ px: { xs: 0.5, sm: 0.75, md: 1 }, pt: { xs: 0.4, sm: 0.6, md: 0.75 } }}>
+                            <Typography variant="subtitle2" sx={{ mb: { xs: 0.1, sm: 0.2, md: 0.25 }, fontWeight: 700, fontSize: 'clamp(0.68rem, 0.8vw, 0.875rem)' }}>
                                 Frameworks and Drivers
                             </Typography>
                         </Box>
-                        <Box sx={{ px: 1, pt: 0.75 }} />
+                        <Box sx={{ px: { xs: 0.5, sm: 0.75, md: 1 }, pt: { xs: 0.4, sm: 0.6, md: 0.75 } }} />
                     </Box>
 
-                    <Box sx={{ display: 'grid', gridTemplateColumns: '1.1fr 2.1fr 1.1fr', columnGap: 1.25, minWidth: 900, mt: -0.5 }}>
-                        <Box sx={{ px: 1, pb: 0.75 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: '1.1fr 2.1fr 1.1fr', columnGap: { xs: 0.5, sm: 0.75, md: 1.25 }, width: '100%', mt: { xs: -0.2, sm: -0.35, md: -0.5 } }}>
+                        <Box sx={{ px: { xs: 0.5, sm: 0.75, md: 1 }, pb: { xs: 0.35, sm: 0.55, md: 0.75 } }}>
                             <CANodeView {...view} isInteractive={areNodesInteractive} />
                         </Box>
 
-                        <Box sx={{ px: 1, pb: 0.75 }}>
-                            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 1 }}>
+                        <Box sx={{ px: { xs: 0.5, sm: 0.75, md: 1 }, pb: { xs: 0.35, sm: 0.55, md: 0.75 } }}>
+                            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: { xs: 0.5, sm: 0.75, md: 1 } }}>
                                 <Box />
                                 <CANodeView {...dataAccess} isInteractive={areNodesInteractive} />
                             </Box>
                         </Box>
 
-                        <Box sx={{ px: 1, pb: 0.75 }}>
+                        <Box sx={{ px: { xs: 0.5, sm: 0.75, md: 1 }, pb: { xs: 0.35, sm: 0.55, md: 0.75 } }}>
                             <CANodeView {...database} isInteractive={areNodesInteractive} />
                         </Box>
                     </Box>

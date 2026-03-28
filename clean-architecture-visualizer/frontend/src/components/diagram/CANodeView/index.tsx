@@ -17,7 +17,7 @@ export function CANodeView({ isInteractive, ...nodeObject }: CANodeViewProps) {
       isInteractive={isInteractive}
       data-ca-node-id={nodeObject.id}
     >
-      <Typography variant="body1" align="center" fontWeight="bold">
+      <Typography variant="body2" align="center" fontWeight="bold" sx={{ fontSize: 'clamp(0.72rem, 0.9vw, 0.875rem)' }}>
         {title}
       </Typography>
     </NodePaper>

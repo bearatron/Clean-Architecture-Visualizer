@@ -19,6 +19,9 @@ export const MainViewContainer = styled('main')(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  overflow: 'hidden',
+  overflow: 'auto',
   padding: theme.spacing(3),
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(1.5),
+  },
 }));
