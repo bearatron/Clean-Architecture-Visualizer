@@ -5,7 +5,6 @@ export class GetProjectSummaryPresenter implements GetProjectSummaryOutputBounda
     
     constructor(private readonly outputData: GetProjectSummaryOutputData) {}
     getOutputData(): object {
-        // return JSON.stringify(this.outputData.getOutputData(), null, 2);
         return this.outputData.getOutputData();
     }
     
