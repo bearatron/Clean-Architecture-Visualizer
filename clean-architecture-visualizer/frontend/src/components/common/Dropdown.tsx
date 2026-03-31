@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export interface DropdownOption {
     key: string;
@@ -17,6 +18,7 @@ interface DropdownProps {
 
 export default function Dropdown({ options, onSelect }: DropdownProps) {
     const location = useLocation();
+    const { t } = useTranslation('common');
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [selectedOptionLabel, setSelectedOptionLabel] = React.useState<string | null>(null);
     const isOpen = Boolean(anchorEl);
@@ -43,12 +45,12 @@ export default function Dropdown({ options, onSelect }: DropdownProps) {
 
     const currentPageLabel = React.useMemo(() => {
         if (location.pathname === '/') {
-            return 'Home';
+            return t('navigation.pages.home');
         }
 
         const matchedOption = options.find((option) => option.to === location.pathname);
-        return matchedOption?.label ?? 'Current page';
-    }, [location.pathname, options]);
+        return matchedOption?.label ?? t('navigation.pages.currentPage');
+    }, [location.pathname, options, t]);
 
     const switchableOptions = React.useMemo(
         () => options.filter((option) => option.to !== location.pathname),
