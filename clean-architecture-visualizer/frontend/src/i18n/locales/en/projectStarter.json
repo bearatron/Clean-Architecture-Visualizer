@@ -1,0 +1,16 @@
+{
+  "projectStarter": {
+    "startNew": {
+      "title": "Start New Project",
+      "description": "Ideal for projects without any use cases.",
+      "button": "Add Project"
+    },
+    "addUseCase": {
+      "title": "Add New Use Case to Existing Project",
+      "description": "Ideal for projects that already have other clean architecture use cases.",
+      "inputLabel": "Use Case Name",
+      "inputPlaceholder": "Value",
+      "button": "Add Files"
+    }
+  }
+}
