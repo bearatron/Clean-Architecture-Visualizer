@@ -60,7 +60,7 @@ const Home = () => {
 
             {/* Info card */}
             <IconButton 
-                sx={{ position: 'absolute', top: 20, right: 20 }} 
+                sx={{ position: 'fixed', bottom: 20, right: 30 }} 
                 onClick={() => setInfoOpen(true)}
                 aria-label={t('infoDialog.title')}
                 title={t('infoDialog.title')}
