@@ -63,7 +63,7 @@ export default function Dropdown({ options, onSelect }: DropdownProps) {
                 variant="outlined"
                 onClick={handleButtonClick}
                 endIcon={<KeyboardArrowDownIcon />}
-                aria-haspopup="true"
+                aria-haspopup="menu"
                 aria-expanded={isOpen ? 'true' : undefined}
                 aria-controls={isOpen ? 'header-navigation-menu' : undefined}
                 sx={{

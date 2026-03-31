@@ -43,8 +43,8 @@ export default function Header() {
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2}}>
                     {/* Home Link */}
                     <Box component={Link} to="/" sx={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-                        <Box sx={{ width: 32, height: 32, display: 'inline-flex', alignItems: 'center', color: 'text.primary' }}>
-                            <HomeIcon style={{ width: '100%', height: '100%', verticalAlign: 'middle', color: 'currentColor' }} />
+                        <Box sx={{ width: 32, height: 32, display: 'inline-flex', alignItems: 'center'}}>
+                            <HomeIcon style={{ width: '100%', height: '100%', verticalAlign: 'middle' }} />
                         </Box>
                         <Typography variant="h6" component="span" sx={{ marginLeft: 1, color: 'text.primary' }}>
                             {t('branding.name')}
