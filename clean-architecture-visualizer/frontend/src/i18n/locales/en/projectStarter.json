@@ -1,5 +1,4 @@
 {
-  "projectStarter": {
     "startNew": {
       "title": "Start New Project",
       "description": "Ideal for projects without any use cases.",
@@ -13,4 +12,3 @@
       "button": "Add Files"
     }
   }
-}
