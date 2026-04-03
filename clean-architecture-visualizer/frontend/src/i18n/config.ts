@@ -20,15 +20,11 @@ i18n.use(initReactI18next).init({
       learning: enLearning,
     },
   },
-  lng: 'en',
+  lng: isTestMode ? 'cimode' : 'en',
   fallbackLng: 'en',
-  resources: { en: { checker: enChecker, home: enHome, useCaseInteractionCode: enUseCaseInteractionCode, codeViewer: enCodeViewer} },
-  lng: isTestMode ? 'cimode' : 'en', 
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false,
-    },
-  // fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false,
+  },
 });
 
 export default i18n;
