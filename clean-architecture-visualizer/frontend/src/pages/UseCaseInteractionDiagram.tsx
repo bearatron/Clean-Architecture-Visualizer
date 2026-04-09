@@ -1,29 +1,39 @@
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import '../i18n/config';
 import Header from '../components/common/Header';
 import { CADiagram, Legend, SideBar } from '../components/diagram';
 import { useState } from 'react';
 import { MainViewContainer, PageContainer, Workspace } from './UseCaseInteractionCode/layout';
 import IssuesSideBarContent from '@/components/diagram/IssuesSideBarContent';
+import { CtaButton } from '../components/common/Button';
 
 export default function UseCaseInteractionDiagram() {
     const { useCaseId, interactionId } = useParams();
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(true);
+    const { t } = useTranslation('useCaseInteractionDiagram');
+
+    const codeRoute = useCaseId && interactionId
+        ? `/use-case/${useCaseId}/interaction/${interactionId}/code`
+        : '/use-case-interaction-code';
     
     return (
         <PageContainer>
-            <Header />
+            <Header
+                actions={
+                    <CtaButton
+                        variant="outlined"
+                        onClick={() => navigate(codeRoute)}
+                    >
+                        {t('actions.viewUseCaseInteractionCode')}
+                    </CtaButton>
+                }
+            />
             <Workspace>
                 <MainViewContainer>
                     <CADiagram/>
                     <Legend />
-                    <Link
-                        to={useCaseId && interactionId
-                            ? `/use-case/${useCaseId}/interaction/${interactionId}/code`
-                            : '/use-case-interaction-code'}
-                        className="btn btn-primary"
-                    >
-                        View Use Case Interaction Code
-                    </Link>
                 </MainViewContainer>
 
                 <SideBar isOpen={isOpen} onOpenChange={setIsOpen}>

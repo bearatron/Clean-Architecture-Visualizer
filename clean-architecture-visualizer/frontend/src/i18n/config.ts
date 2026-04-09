@@ -5,6 +5,7 @@ import enHome from './locales/en/home.json';
 import enCommon from './locales/en/common.json';
 import enCodeViewer from './locales/en/codeViewer.json';
 import enUseCaseInteractionCode from './locales/en/useCaseInteractionCode.json';
+import enUseCaseInteractionDiagram from './locales/en/useCaseInteractionDiagram.json';
 import enProjectStarter from './locales/en/projectStarter.json';
 import enLearning from './locales/en/learning.json';
 
@@ -19,6 +20,7 @@ i18n.use(initReactI18next).init({
       home: enHome,
       common: enCommon,
       useCaseInteractionCode: enUseCaseInteractionCode,
+      useCaseInteractionDiagram: enUseCaseInteractionDiagram,
       codeViewer: enCodeViewer,
       projectStarter: enProjectStarter,
       learning: enLearning,
