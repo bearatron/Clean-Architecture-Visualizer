@@ -1,4 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../../../i18n/config';
 import { CANodeView } from '../CANodeView';
 import { Edge } from '../Edge';
 import type { ArrowHeadType, CANode, CAEdge } from '../../../lib/types';
@@ -113,15 +115,17 @@ function LegendNodeItem({ label, node }: LegendNodeItemProps) {
 }
 
 export function Legend() {
+  const { t } = useTranslation('legend');
+
   return (
     <LegendRoot elevation={0}>
       <LegendItems>
-        <LegendEdgeItem label="Dependency" arrowHeadType="filledTriangle" status="VALID" />
-        <LegendEdgeItem label="Implements" arrowHeadType="hollowTriangle" status="VALID" />
-        <LegendEdgeItem label="Incorrect Dependency" arrowHeadType="filledTriangle" status="INCORRECT_DEPENDENCY" />
+        <LegendEdgeItem label={t('dependency')} arrowHeadType="filledTriangle" status="VALID" />
+        <LegendEdgeItem label={t('implements')} arrowHeadType="hollowTriangle" status="VALID" />
+        <LegendEdgeItem label={t('incorrectDependency')} arrowHeadType="filledTriangle" status="INCORRECT_DEPENDENCY" />
 
         <LegendNodeItem
-          label="Component"
+          label={t('component')}
           node={{
             id: 'legend-node-component',
             name: 'Controller',
@@ -132,7 +136,7 @@ export function Legend() {
         />
 
         <LegendNodeItem
-          label="Missing Component"
+          label={t('missingComponent')}
           node={{
             id: 'legend-node-missing-component',
             name: 'Entities',
@@ -143,7 +147,7 @@ export function Legend() {
         />
 
         <LegendNodeItem
-          label="Error in Component"
+          label={t('errorInComponent')}
           node={{
             id: 'legend-node-error-component',
             name: 'Controller',
