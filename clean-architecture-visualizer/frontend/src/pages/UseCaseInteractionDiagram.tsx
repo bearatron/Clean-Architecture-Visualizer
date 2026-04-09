@@ -25,6 +25,7 @@ export default function UseCaseInteractionDiagram() {
                     <CtaButton
                         variant="outlined"
                         onClick={() => navigate(codeRoute)}
+                        startIcon={<span>{'</>'}</span>}
                     >
                         {t('actions.viewUseCaseInteractionCode')}
                     </CtaButton>

@@ -57,6 +57,7 @@ export default function Header({ actions }: HeaderProps) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
+                        minHeight: 77, // Ensure consistent height even if actions are empty
                         p: 2,
                         gap: 0,
                     }}
