@@ -38,7 +38,7 @@ export default function UseCaseInteractionDiagram() {
                 </MainViewContainer>
 
                 <SideBar isOpen={isOpen} onOpenChange={setIsOpen}>
-                    <IssuesSideBarContent/>
+                    <IssuesSideBarContent interactionId={interactionId} />
                 </SideBar>
             </Workspace>
         </PageContainer>

@@ -4,6 +4,7 @@ import enChecker from './locales/en/checker.json';
 import enHome from './locales/en/home.json';
 import enCommon from './locales/en/common.json';
 import enCodeViewer from './locales/en/codeViewer.json';
+import enIssuesSideBarContent from './locales/en/issuesSideBarContent.json';
 import enUseCaseInteractionCode from './locales/en/useCaseInteractionCode.json';
 import enUseCaseInteractionDiagram from './locales/en/useCaseInteractionDiagram.json';
 import enProjectStarter from './locales/en/projectStarter.json';
@@ -19,6 +20,7 @@ i18n.use(initReactI18next).init({
       checker: enChecker,
       home: enHome,
       common: enCommon,
+      issuesSideBarContent: enIssuesSideBarContent,
       useCaseInteractionCode: enUseCaseInteractionCode,
       useCaseInteractionDiagram: enUseCaseInteractionDiagram,
       codeViewer: enCodeViewer,
