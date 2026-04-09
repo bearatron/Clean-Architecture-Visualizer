@@ -39,7 +39,7 @@ function IssuesSideBarContent({ interactionId }: IssuesSideBarContentProps) {
     const violations = extractViolations(data);
 
     if (!interactionId) {
-        return <Typography variant="body2">{t('selectInteraction')}</Typography>;
+        return <Typography variant="body2" textAlign={'center'}>{t('selectInteraction')}</Typography>;
     }
 
     if (isLoading) {
@@ -47,11 +47,11 @@ function IssuesSideBarContent({ interactionId }: IssuesSideBarContentProps) {
     }
 
     if (isError) {
-        return <Typography variant="body2">{t('error')}</Typography>;
+        return <Typography variant="body2" textAlign={'center'}>{t('error')}</Typography>;
     }
 
     if (!violations.length) {
-        return <Typography variant="body2">{t('emptyState')}</Typography>;
+        return <Typography variant="body2" textAlign={'center'}>{t('emptyState')}</Typography>;
     }
 
     return (
