@@ -3,7 +3,7 @@
   "emptyState": "No violations found for this interaction!",
   "loading": "Loading violations...",
   "error": "Unable to load violations.",
-  "selectInteraction": "Select an interaction to view issues.",
+  "selectInteraction": "Select an interaction to view violations.",
   "fields": {
     "type": "Type",
     "message": "Message",

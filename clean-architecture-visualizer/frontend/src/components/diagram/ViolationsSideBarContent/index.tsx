@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useInteractionViolations } from '../../../actions/useAnalysis';
 import type { Violation } from '../../../lib/types';
 import {
-    IssueContainer,
-    IssuesRoot,
+    ViolationsContainer,
+    ViolationsRoot,
     ViolationField,
     ViolationFieldLabel,
     ViolationFileContext,
@@ -14,7 +14,7 @@ import {
     ViolationsTitle,
 } from './styles';
 
-type IssuesSideBarContentProps = {
+type ViolationsSideBarContentProps = {
     interactionId?: string;
 };
 
@@ -33,8 +33,8 @@ const extractViolations = (data: unknown): Violation[] => {
     return [];
 };
 
-function IssuesSideBarContent({ interactionId }: IssuesSideBarContentProps) {
-    const { t } = useTranslation('issuesSideBarContent');
+function ViolationsSideBarContent({ interactionId }: ViolationsSideBarContentProps) {
+    const { t } = useTranslation('violationsSideBarContent');
     const { data, isLoading, isError } = useInteractionViolations(interactionId ?? '');
     const violations = extractViolations(data);
 
@@ -55,13 +55,13 @@ function IssuesSideBarContent({ interactionId }: IssuesSideBarContentProps) {
     }
 
     return (
-        <IssuesRoot>
+        <ViolationsRoot>
             <ViolationsTitle variant="h6">
                 {t('title')}
             </ViolationsTitle>
             <ViolationsList>
                 {violations.map((violation) => (
-                    <IssueContainer key={violation.id}>
+                    <ViolationsContainer key={violation.id}>
                         <ViolationField>
                             <ViolationFieldLabel variant="caption">{t('fields.type')}</ViolationFieldLabel>
                             <ViolationType variant="subtitle2">
@@ -93,11 +93,11 @@ function IssuesSideBarContent({ interactionId }: IssuesSideBarContentProps) {
                                 </ViolationFileContext>
                             </ViolationField>
                         ) : null}
-                    </IssueContainer>
+                    </ViolationsContainer>
                 ))}
             </ViolationsList>
-        </IssuesRoot>
+        </ViolationsRoot>
     );
 }
 
-export default IssuesSideBarContent;
+export default ViolationsSideBarContent;

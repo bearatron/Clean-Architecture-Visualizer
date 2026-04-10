@@ -5,7 +5,7 @@ import Header from '../components/common/Header';
 import { CADiagram, Legend, SideBar } from '../components/diagram';
 import { useState } from 'react';
 import { MainViewContainer, PageContainer, Workspace } from './UseCaseInteractionCode/layout';
-import IssuesSideBarContent from '@/components/diagram/IssuesSideBarContent';
+import ViolationsSideBarContent from '@/components/diagram/ViolationsSideBarContent';
 import { CtaButton } from '../components/common/Button';
 
 export default function UseCaseInteractionDiagram() {
@@ -38,7 +38,7 @@ export default function UseCaseInteractionDiagram() {
                 </MainViewContainer>
 
                 <SideBar isOpen={isOpen} onOpenChange={setIsOpen}>
-                    <IssuesSideBarContent interactionId={interactionId} />
+                    <ViolationsSideBarContent interactionId={interactionId} />
                 </SideBar>
             </Workspace>
         </PageContainer>

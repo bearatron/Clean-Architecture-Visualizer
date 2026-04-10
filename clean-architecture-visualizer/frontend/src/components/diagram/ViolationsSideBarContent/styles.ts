@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-export const IssuesRoot = styled(Box)({
+export const ViolationsRoot = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
 });
@@ -48,7 +48,7 @@ export const ViolationFileContext = styled(ViolationValue)(({ theme }) => ({
     marginTop: theme.spacing(0.5),
 }));
 
-export const IssueContainer = styled('div')(({ theme }) => ({
+export const ViolationsContainer = styled('div')(({ theme }) => ({
     padding: theme.spacing(2),
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
