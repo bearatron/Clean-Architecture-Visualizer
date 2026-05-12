@@ -5,7 +5,7 @@
     "build": "tsc && node -e \"require('fs').copyFileSync('package.json', 'dist/package.json')\" && npm run build_frontend",
     "build_frontend": "npm install --prefix frontend && npm run build --prefix frontend",
     "start": "node ./dist/src/app/index.js",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "license": "MIT",
   "bugs": {
